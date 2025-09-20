@@ -86,25 +86,9 @@ body.dark-mode .prayer-card .card-title {
   color: #e9ecef !important;
 }
 
-body.dark-mode .prayer-card.highlight {
-  background-color: rgba(255, 193, 7, 0.25) !important;
-  border: 2px solid #ffc107 !important;
-  color: #fff;
-}
-
-body.dark-mode .prayer-card.highlight .card-title {
-  color: #ffc107 !important;
-  font-weight: bold;
-}
-
 body.dark-mode .prayer-card .fs-5 {
   color: #e9ecef;
   font-weight: 600;
-}
-
-body.dark-mode .prayer-card.highlight .fs-5 {
-  color: #ffc107;
-  font-weight: bold;
 }
 
 body.dark-mode header.bg-primary {
