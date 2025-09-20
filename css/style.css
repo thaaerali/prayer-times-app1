@@ -31,11 +31,6 @@
 .prayer-card {
   transition: all 0.3s ease;
 }
-.prayer-card.highlight {
-  background-color: rgba(255, 193, 7, 0.2) !important;
-  border: 2px solid #ffc107 !important;
-  transform: scale(1.02);
-}
 .card-title {
   font-size: 1.2rem;
 }
