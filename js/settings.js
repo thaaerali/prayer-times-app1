@@ -118,6 +118,10 @@ function saveSettings() {
 document.getElementById('open-locations-list').addEventListener('click', () => {
     if (typeof locationManager !== 'undefined') {
         locationManager.openLocationModal();
+        
+        // إغلاق نافذة الإعدادات عند فتح نافذة المواقع
+        const settingsModal = bootstrap.Modal.getInstance(document.getElementById('settings-modal'));
+        settingsModal.hide();
     }
 });
   localStorage.setItem('prayerSettings', JSON.stringify(settings));
@@ -220,3 +224,4 @@ function initAppearanceEvents() {
   }
 
 }
+
