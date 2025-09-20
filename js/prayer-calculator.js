@@ -86,35 +86,6 @@ function getPrayerTimes(lat, lng, date, method) {
     }
 }
 
-function getCurrentPrayer(times) {
-  const now = new Date();
-  const currentMinutes = now.getHours()*60 + now.getMinutes();
-
-  // تحويل الأوقات إلى دقائق لتحديد الصلاة الحالية
-  const prayerMinutes = {};
-  for (const [key, value] of Object.entries(times)) {
-    const [h, m] = value.split(':').map(Number);
-    prayerMinutes[key] = h*60 + m;
-  }
-
-  // تحديد الصلاة الحالية بناءً على الوقت
-  if (currentMinutes >= prayerMinutes.isha || currentMinutes < prayerMinutes.fajr) {
-    return 'isha';
-  } else if (currentMinutes >= prayerMinutes.maghrib) {
-    return 'maghrib';
-  } else if (currentMinutes >= prayerMinutes.sunset) {
-    return 'sunset';
-  } else if (currentMinutes >= prayerMinutes.asr) {
-    return 'asr';
-  } else if (currentMinutes >= prayerMinutes.dhuhr) {
-    return 'dhuhr';
-  } else if (currentMinutes >= prayerMinutes.sunrise) {
-    return 'sunrise';
-  } else {
-    return 'fajr';
-  }
-}
-
 function calculateAndDisplayPrayerTimes() {
   const settings = JSON.parse(localStorage.getItem('prayerSettings')) || {};
   const method = settings.calculationMethod || 'MWL';
@@ -128,7 +99,6 @@ function calculateAndDisplayPrayerTimes() {
   // الحصول على أوقات الصلاة باستخدام الموقع الحالي
   const today = new Date();
   const times = getPrayerTimes(lat, lng, today, method);
-  const currentPrayer = getCurrentPrayer(times);
 
   // تحديد الصلوات التي سيتم عرضها
   const prayersToShow = ['fajr', 'sunrise', 'dhuhr'];
@@ -150,10 +120,9 @@ function calculateAndDisplayPrayerTimes() {
   for (const key of prayersToShow) {
     let rounded = applyRounding(times[key], roundingMethod);
     let formatted = formatTime(rounded, timeFormat);
-    const highlightClass = key === currentPrayer ? 'highlight' : '';
 
     html += `
-      <div class="card mb-3 shadow-sm prayer-card ${highlightClass}">
+      <div class="card mb-3 shadow-sm prayer-card">
         <div class="card-body d-flex justify-content-between align-items-center">
           <h5 class="card-title text-primary mb-0">${prayerNames[key]}</h5>
           <span class="fs-5 fw-bold">${formatted}</span>
