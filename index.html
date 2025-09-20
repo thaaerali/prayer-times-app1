@@ -18,6 +18,7 @@
   <script src="lib/praytimes.js"></script>
 </head>
 <body class="bg-light">
+
   <!-- رسالة الخطأ -->
   <div id="error-message" class="error-message container my-3"></div>
 
@@ -29,7 +30,16 @@
 
   <!-- رأس الصفحة -->
   <header class="bg-primary text-white text-center p-3 shadow-sm d-flex justify-content-between align-items-center">
-    <!-- محتوى الرأس -->
+    <div>
+      <h1 id="city-name" class="h4 mb-1">جاري تحديد الموقع...</h1>
+      <p id="coordinates" class="mb-0 small opacity-75"></p>
+      <p id="date-display" class="mb-0 small opacity-75"></p>
+    </div>
+
+    <!-- زر الترس -->
+    <button id="settings-button" class="btn btn-light">
+      <i class="bi bi-gear-fill"></i>
+    </button>
   </header>
 
   <!-- أوقات الصلاة -->
@@ -39,17 +49,261 @@
 
   <!-- نافذة الإعدادات -->
   <div class="modal fade" id="settings-modal" tabindex="-1">
-    <!-- محتوى نافذة الإعدادات -->
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">الإعدادات</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <!-- التبويبات العمودية -->
+            <div class="col-md-3">
+              <div class="nav flex-column nav-pills vertical-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="v-pills-times-tab" data-bs-toggle="pill" data-bs-target="#v-pills-times" type="button" role="tab" aria-controls="v-pills-times" aria-selected="true">
+                  إعدادات أوقات الصلاة
+                </button>
+                <button class="nav-link" id="v-pills-location-tab" data-bs-toggle="pill" data-bs-target="#v-pills-location" type="button" role="tab" aria-controls="v-pills-location" aria-selected="false">
+                  تحديد الموقع
+                </button>
+                <!-- تبويب الأصوات -->
+                <button class="nav-link" id="v-pills-sound-tab" data-bs-toggle="pill" data-bs-target="#v-pills-sound" type="button" role="tab" aria-controls="v-pills-sound" aria-selected="false">
+                  الأصوات
+                </button>
+                <!-- تبويب مظهر التطبيق -->
+                <button class="nav-link" id="v-pills-appearance-tab" data-bs-toggle="pill" data-bs-target="#v-pills-appearance" type="button" role="tab" aria-controls="v-pills-appearance" aria-selected="false">
+                  مظهر التطبيق
+                </button>
+              </div>
+            </div>
+
+            <!-- محتوى التبويبات -->
+            <div class="col-md-9">
+              <div class="tab-content" id="v-pills-tabContent">
+                <!-- إعدادات أوقات الصلاة -->
+                <div class="tab-pane fade show active" id="v-pills-times" role="tabpanel" aria-labelledby="v-pills-times-tab">
+                  <div class="mb-3">
+                    <label for="calculation-method" class="form-label fw-bold">طريقة الحساب:</label>
+                    <select id="calculation-method" class="form-select">
+                      <option value="Hadi">تقويم الهادي 
+                      <option value="MWL">رابطة العالم الإسلامي (مكة)</option>
+                      <option value="ISNA">الجمعية الإسلامية لأمريكا الشمالية</option>
+                      <option value="Egypt">هيئة المساحة المصرية</option>
+                      <option value="Makkah">أم القرى</option>
+                      <option value="Karachi">جامعة العلوم الإسلامية Karachi</option>
+                      <option value="Tehran">معهد الجيوفيزياء University of Tehran</option>
+                      <option value="Jafari">الهيئة العامة للتقويم (إيران)</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="time-format" class="form-label fw-bold">تنسيق الوقت:</label>
+                    <select id="time-format" class="form-select">
+                      <option value="24h">24 ساعة</option>
+                      <option value="12h">12 ساعة (am/pm)</option>
+                      <option value="12H">12 ساعة (بدون am/pm)</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="rounding-method" class="form-label fw-bold">طريقة التقريب:</label>
+                    <select id="rounding-method" class="form-select">
+                      <option value="nearest">الأقرب</option>
+                      <option value="up">تقريب لأعلى</option>
+                      <option value="down">تقريب لأسفل</option>
+                      <option value="none">بدون تقريب</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">الأوقات الإضافية للعرض:</label>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-asr">
+                      <label class="form-check-label" for="toggle-asr">العصر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-isha">
+                      <label class="form-check-label" for="toggle-isha">العشاء</label>
+                    </div>
+                    <small class="text-muted">الفجر، الشروق، الغروب، الظهر والمغرب دائمًا</small>
+                  </div>
+
+                  <!-- خيارات الإشعارات -->
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">الإشعارات عند دخول وقت الصلاة:</label>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-fajr-notification">
+                      <label class="form-check-label" for="toggle-fajr-notification">إشعار الفجر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-dhuhr-notification">
+                      <label class="form-check-label" for="toggle-dhuhr-notification">إشعار الظهر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-asr-notification">
+                      <label class="form-check-label" for="toggle-asr-notification">إشعار العصر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-maghrib-notification">
+                      <label class="form-check-label" for="toggle-maghrib-notification">إشعار المغرب</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-isha-notification">
+                      <label class="form-check-label" for="toggle-isha-notification">إشعار العشاء</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- تحديد الموقع -->
+                <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
+                  <p>يمكنك تحديد موقعك الحالي للحصول على أوقات دقيقة:</p>
+                  <button id="location-button" class="btn btn-outline-primary">
+                    <i class="bi bi-geo-alt-fill"></i> تحديد موقعي تلقائياً
+                  </button>
+                  <div id="location-status" class="mt-2 small"></div>
+
+                  <hr>
+
+                  <div class="mb-3">
+                    <label for="manual-location" class="form-label fw-bold">أدخل المدينة يدوياً:</label>
+                    <input type="text" id="manual-location" class="form-control" placeholder="مثال: النجف">
+                  </div>
+                  <button id="save-manual-location" class="btn btn-primary">حفظ الموقع اليدوي</button>
+                </div>
+
+                <!-- تبويب الأصوات -->
+                <div class="tab-pane fade" id="v-pills-sound" role="tabpanel" aria-labelledby="v-pills-sound-tab">
+                  <div class="mb-4">
+                    <h6 class="fw-bold mb-3">صوت الأذان</h6>
+                    <div class="list-group" id="adhan-sounds-list">
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="abdul-basit">
+                        <div>
+                          <span class="fw-medium">أبا ذر الحلواجي</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="mishary-rashid">
+                        <div>
+                          <span class="fw-medium">الشيخ شبر معله</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="saud-al-shuraim">
+                        <div>
+                          <span class="fw-medium">الحاج مصطفى الصراف</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="yasser-al-dosari">
+                        <div>
+                          <span class="fw-medium">ياسر الدوسري</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <h6 class="fw-bold mb-3">تشغيل الأذان تلقائياً</h6>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-fajr-adhan">
+                      <label class="form-check-label" for="toggle-fajr-adhan">أذان الفجر</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-dhuhr-adhan">
+                      <label class="form-check-label" for="toggle-dhuhr-adhan">أذان الظهر</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-asr-adhan">
+                      <label class="form-check-label" for="toggle-asr-adhan">أذان العصر</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-maghrib-adhan">
+                      <label class="form-check-label" for="toggle-maghrib-adhan">أذان المغرب</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-isha-adhan">
+                      <label class="form-check-label" for="toggle-isha-adhan">أذان العشاء</label>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="volume-level" class="form-label fw-bold">مستوى الصوت:</label>
+                    <input type="range" class="form-range" id="volume-level" min="0" max="100" step="10">
+                    <div class="d-flex justify-content-between">
+                      <small>منخفض</small>
+                      <small>متوسط</small>
+                      <small>مرتفع</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- تبويب مظهر التطبيق -->
+                <div class="tab-pane fade" id="v-pills-appearance" role="tabpanel" aria-labelledby="v-pills-appearance-tab">
+                  <div class="mb-4">
+                    <h6 class="fw-bold mb-3">مظهر التطبيق</h6>
+                    <div class="list-group" id="appearance-list">
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="light">
+                        <div>
+                          <span class="fw-medium">الوضع النهاري</span>
+                          <small class="d-block text-muted">مظهر فاتح مناسب للنهار</small>
+                        </div>
+                        <i class="bi bi-sun-fill text-warning"></i>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="dark">
+                        <div>
+                          <span class="fw-medium">الوضع الليلي</span>
+                          <small class="d-block text-muted">مظهر داكن مريح للعين في الليل</small>
+                        </div>
+                        <i class="bi bi-moon-stars-fill text-info"></i>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="auto">
+                        <div>
+                          <span class="fw-medium">حسب جهак المستخدم</span>
+                          <small class="d-block text-muted">يتبع إعدادات الجهاز</small>
+                        </div>
+                        <i class="bi bi-circle-half text-secondary"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-settings" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+          <button id="save-settings" class="btn btn-primary">حفظ</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- إشعار -->
   <div id="notification" class="toast align-items-center text-white bg-primary border-0 position-fixed bottom-0 end-0 m-3" role="alert">
-    <!-- محتوى الإشعار -->
+    <div class="d-flex">
+      <div class="toast-body">تم حفظ الإعدادات بنجاح</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
   </div>
 
   <!-- إشعارات الصلاة -->
   <div id="prayer-notification" class="toast prayer-notification position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 9999;">
-    <!-- محتوى إشعار الصلاة -->
+    <div class="toast-header">
+      <strong class="me-auto" id="prayer-notification-title">حان وقت الصلاة</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+    </div>
+    <div class="toast-body" id="prayer-notification-body">
+      حان وقت صلاة الفجر
+    </div>
   </div>
 
   <!-- عنصر صوت مخفي -->
