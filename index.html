@@ -155,21 +155,26 @@
                 </div>
 
                 <!-- تحديد الموقع -->
-                <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
-                  <p>يمكنك تحديد موقعك الحالي للحصول على أوقات دقيقة:</p>
-                  <button id="location-button" class="btn btn-outline-primary">
-                    <i class="bi bi-geo-alt-fill"></i> تحديد موقعي تلقائياً
-                  </button>
-                  <div id="location-status" class="mt-2 small"></div>
+               <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
+              <div class="d-flex gap-2 mb-3">
+              <button id="location-button" class="btn btn-outline-primary flex-fill">
+              <i class="bi bi-geo-alt-fill"></i> تحديد موقعي تلقائياً
+              </button>
+              <button id="open-locations-list" class="btn btn-outline-secondary">
+              <i class="bi bi-list-ul"></i> المواقع
+                </button>
+          </div>
+    
+         <div id="location-status" class="mt-2 small"></div>
 
-                  <hr>
+        <hr>
 
-                  <div class="mb-3">
-                    <label for="manual-location" class="form-label fw-bold">أدخل المدينة يدوياً:</label>
-                    <input type="text" id="manual-location" class="form-control" placeholder="مثال: النجف">
-                  </div>
-                  <button id="save-manual-location" class="btn btn-primary">حفظ الموقع اليدوي</button>
-                </div>
+        <div class="mb-3">
+        <label for="manual-location" class="form-label fw-bold">أدخل المدينة يدوياً:</label>
+        <input type="text" id="manual-location" class="form-control" placeholder="مثال: النجف">
+        </div>
+        <button id="save-manual-location" class="btn btn-primary">حفظ الموقع اليدوي</button>
+        </div>
 
                 <!-- تبويب الأصوات -->
                 <div class="tab-pane fade" id="v-pills-sound" role="tabpanel" aria-labelledby="v-pills-sound-tab">
@@ -327,5 +332,6 @@
   <script src="js/app.js"></script>
 </body>
 </html>
+
 
 
