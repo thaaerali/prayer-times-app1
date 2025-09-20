@@ -16,6 +16,49 @@
 
   <!-- مكتبة praytimes.js -->
   <script src="lib/praytimes.js"></script>
+  
+  <style>
+    /* أنماط علامة الموقع الشفافة */
+    .location-marker {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 8px;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 50%;
+    }
+    
+    .location-marker:hover {
+      color: rgba(255, 255, 255, 1);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .location-marker .bi {
+      font-size: 1.2rem;
+    }
+    
+    /* تلميح الأدوات المخصص */
+    .custom-tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: translateY(-10px);
+    }
+    
+    .location-marker:hover .custom-tooltip {
+      opacity: 1;
+      transform: translateY(-15px);
+    }
+  </style>
 </head>
 <body class="bg-light">
 
@@ -36,11 +79,14 @@
       <p id="date-display" class="mb-0 small opacity-75"></p>
     </div>
 
-    <div class="d-flex">
-      <!-- زر إدارة المواقع -->
-      <button id="location-list-button" class="btn btn-light ms-2">
-        <i class="bi bi-geo-alt-fill"></i> المواقع المحفوظة
-      </button>
+    <div class="d-flex align-items-center">
+      <!-- علامة الموقع الشفافة مع تلميح -->
+      <div class="position-relative">
+        <button id="location-list-button" class="location-marker" title="المواقع المحفوظة">
+          <i class="bi bi-geo-alt-fill"></i>
+          <div class="custom-tooltip">المواقع المحفوظة</div>
+        </button>
+      </div>
 
       <!-- زر الترس -->
       <button id="settings-button" class="btn btn-light">
