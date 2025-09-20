@@ -36,10 +36,17 @@
       <p id="date-display" class="mb-0 small opacity-75"></p>
     </div>
 
-    <!-- زر الترس فقط -->
-    <button id="settings-button" class="btn btn-light">
-      <i class="bi bi-gear-fill"></i>
-    </button>
+    <div class="d-flex">
+      <!-- زر إدارة المواقع -->
+      <button id="location-list-button" class="btn btn-light ms-2">
+        <i class="bi bi-geo-alt-fill"></i> المواقع المحفوظة
+      </button>
+
+      <!-- زر الترس -->
+      <button id="settings-button" class="btn btn-light">
+        <i class="bi bi-gear-fill"></i>
+      </button>
+    </div>
   </header>
 
   <!-- أوقات الصلاة -->
@@ -82,7 +89,7 @@
               <div class="tab-content" id="v-pills-tabContent">
                 <!-- إعدادات أوقات الصلاة -->
                 <div class="tab-pane fade show active" id="v-pills-times" role="tabpanel" aria-labelledby="v-pills-times-tab">
-                   <div class="mb-3">
+                  <div class="mb-3">
                     <label for="calculation-method" class="form-label fw-bold">طريقة الحساب:</label>
                     <select id="calculation-method" class="form-select">
                       <option value="Hadi">تقويم الهادي 
@@ -94,8 +101,9 @@
                       <option value="Tehran">معهد الجيوفيزياء University of Tehran</option>
                       <option value="Jafari">الهيئة العامة للتقويم (إيران)</option>
                     </select>
-                </div>
-                   <div class="mb-3">
+                  </div>
+
+                  <div class="mb-3">
                     <label for="time-format" class="form-label fw-bold">تنسيق الوقت:</label>
                     <select id="time-format" class="form-select">
                       <option value="24h">24 ساعة</option>
@@ -152,6 +160,7 @@
                     </div>
                   </div>
                 </div>
+
                 <!-- تحديد الموقع -->
                 <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
                   <div class="d-flex gap-2 mb-3">
@@ -159,7 +168,7 @@
                       <i class="bi bi-geo-alt-fill"></i> تحديد موقعي تلقائياً
                     </button>
                     <button id="open-locations-list" class="btn btn-outline-secondary">
-                      <i class="bi bi-list-ul"></i> المواقع المحفوظة
+                      <i class="bi bi-list-ul"></i> المواقع
                     </button>
                   </div>
     
@@ -251,7 +260,7 @@
 
                 <!-- تبويب مظهر التطبيق -->
                 <div class="tab-pane fade" id="v-pills-appearance" role="tabpanel" aria-labelledby="v-pills-appearance-tab">
-                   <div class="mb-4">
+                  <div class="mb-4">
                     <h6 class="fw-bold mb-3">مظهر التطبيق</h6>
                     <div class="list-group" id="appearance-list">
                       <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="light">
