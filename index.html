@@ -82,9 +82,76 @@
               <div class="tab-content" id="v-pills-tabContent">
                 <!-- إعدادات أوقات الصلاة -->
                 <div class="tab-pane fade show active" id="v-pills-times" role="tabpanel" aria-labelledby="v-pills-times-tab">
-                  <!-- محتوى إعدادات أوقات الصلاة -->
+                   <div class="mb-3">
+                    <label for="calculation-method" class="form-label fw-bold">طريقة الحساب:</label>
+                    <select id="calculation-method" class="form-select">
+                      <option value="Hadi">تقويم الهادي 
+                      <option value="MWL">رابطة العالم الإسلامي (مكة)</option>
+                      <option value="ISNA">الجمعية الإسلامية لأمريكا الشمالية</option>
+                      <option value="Egypt">هيئة المساحة المصرية</option>
+                      <option value="Makkah">أم القرى</option>
+                      <option value="Karachi">جامعة العلوم الإسلامية Karachi</option>
+                      <option value="Tehran">معهد الجيوفيزياء University of Tehran</option>
+                      <option value="Jafari">الهيئة العامة للتقويم (إيران)</option>
+                    </select>
                 </div>
+                   <div class="mb-3">
+                    <label for="time-format" class="form-label fw-bold">تنسيق الوقت:</label>
+                    <select id="time-format" class="form-select">
+                      <option value="24h">24 ساعة</option>
+                      <option value="12h">12 ساعة (am/pm)</option>
+                      <option value="12H">12 ساعة (بدون am/pm)</option>
+                    </select>
+                  </div>
 
+                  <div class="mb-3">
+                    <label for="rounding-method" class="form-label fw-bold">طريقة التقريب:</label>
+                    <select id="rounding-method" class="form-select">
+                      <option value="nearest">الأقرب</option>
+                      <option value="up">تقريب لأعلى</option>
+                      <option value="down">تقريب لأسفل</option>
+                      <option value="none">بدون تقريب</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">الأوقات الإضافية للعرض:</label>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-asr">
+                      <label class="form-check-label" for="toggle-asr">العصر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-isha">
+                      <label class="form-check-label" for="toggle-isha">العشاء</label>
+                    </div>
+                    <small class="text-muted">الفجر، الشروق، الغروب، الظهر والمغرب دائمًا</small>
+                  </div>
+
+                  <!-- خيارات الإشعارات -->
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">الإشعارات عند دخول وقت الصلاة:</label>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-fajr-notification">
+                      <label class="form-check-label" for="toggle-fajr-notification">إشعار الفجر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-dhuhr-notification">
+                      <label class="form-check-label" for="toggle-dhuhr-notification">إشعار الظهر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-asr-notification">
+                      <label class="form-check-label" for="toggle-asr-notification">إشعار العصر</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-maghrib-notification">
+                      <label class="form-check-label" for="toggle-maghrib-notification">إشعار المغرب</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-isha-notification">
+                      <label class="form-check-label" for="toggle-isha-notification">إشعار العشاء</label>
+                    </div>
+                  </div>
+                </div>
                 <!-- تحديد الموقع -->
                 <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
                   <div class="d-flex gap-2 mb-3">
@@ -109,12 +176,107 @@
 
                 <!-- تبويب الأصوات -->
                 <div class="tab-pane fade" id="v-pills-sound" role="tabpanel" aria-labelledby="v-pills-sound-tab">
-                  <!-- محتوى تبويب الأصوات -->
+                  <div class="mb-4">
+                    <h6 class="fw-bold mb-3">صوت الأذان</h6>
+                    <div class="list-group" id="adhan-sounds-list">
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="abdul-basit">
+                        <div>
+                          <span class="fw-medium">أبا ذر الحلواجي</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="mishary-rashid">
+                        <div>
+                          <span class="fw-medium">الشيخ شبر معله</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="saud-al-shuraim">
+                        <div>
+                          <span class="fw-medium">الحاج مصطفى الصراف</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-sound="yasser-al-dosari">
+                        <div>
+                          <span class="fw-medium">محمد التوخى</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary play-btn">
+                          <i class="bi bi-play-fill"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <h6 class="fw-bold mb-3">تشغيل الأذان تلقائياً</h6>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-fajr-adhan">
+                      <label class="form-check-label" for="toggle-fajr-adhan">أذان الفجر</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-dhuhr-adhan">
+                      <label class="form-check-label" for="toggle-dhuhr-adhan">أذان الظهر</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-asr-adhan">
+                      <label class="form-check-label" for="toggle-asr-adhan">أذان العصر</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="toggle-maghrib-adhan">
+                      <label class="form-check-label" for="toggle-maghrib-adhan">أذان المغرب</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-isha-adhan">
+                      <label class="form-check-label" for="toggle-isha-adhan">أذان العشاء</label>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="volume-level" class="form-label fw-bold">مستوى الصوت:</label>
+                    <input type="range" class="form-range" id="volume-level" min="0" max="100" step="10">
+                    <div class="d-flex justify-content-between">
+                      <small>منخفض</small>
+                      <small>متوسط</small>
+                      <small>مرتفع</small>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- تبويب مظهر التطبيق -->
                 <div class="tab-pane fade" id="v-pills-appearance" role="tabpanel" aria-labelledby="v-pills-appearance-tab">
-                  <!-- محتوى تبويب المظهر -->
+                   <div class="mb-4">
+                    <h6 class="fw-bold mb-3">مظهر التطبيق</h6>
+                    <div class="list-group" id="appearance-list">
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="light">
+                        <div>
+                          <span class="fw-medium">الوضع النهاري</span>
+                          <small class="d-block text-muted">مظهر فاتح مناسب للنهار</small>
+                        </div>
+                        <i class="bi bi-sun-fill text-warning"></i>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="dark">
+                        <div>
+                          <span class="fw-medium">الوضع الليلي</span>
+                          <small class="d-block text-muted">مظهر داكن مريح للعين في الليل</small>
+                        </div>
+                        <i class="bi bi-moon-stars-fill text-info"></i>
+                      </div>
+                      <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="auto">
+                        <div>
+                          <span class="fw-medium">حسب النظام</span>
+                          <small class="d-block text-muted">يتبع إعدادات الجهاز</small>
+                        </div>
+                        <i class="bi bi-circle-half text-secondary"></i>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
