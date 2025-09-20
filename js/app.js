@@ -129,7 +129,32 @@ function saveManualLocation() {
     showError('يرجى إدخال اسم المدينة');
   }
 }
+// تأكد من تضمين ملف location-manager.js في HTML قبل app.js
 
+// دالة مساعدة للاستخدام في location-manager
+function updatePrayerTimes(lat, lng) {
+    // هذه الدالة يجب أن تكون موجودة في مشروعك
+    console.log('Updating prayer times for:', lat, lng);
+    
+    // استدعاء دالة حساب أوقات الصلاة
+    if (typeof calculatePrayerTimes === 'function') {
+        calculatePrayerTimes(lat, lng);
+    }
+    
+    // تحديث واجهة المستخدم
+    updatePrayerTimesDisplay();
+}
+
+// دالة مساعدة لعرض الإشعارات
+function showNotification(message, type = 'success') {
+    // استخدام نظام الإشعارات الموجود في التطبيق
+    const notification = document.getElementById('notification');
+    if (notification) {
+        notification.querySelector('.toast-body').textContent = message;
+        const toast = new bootstrap.Toast(notification);
+        toast.show();
+    }
+}
 // تهيئة التطبيق
 function initApp() {
   // التحقق من تحميل المكتبة أولاً
@@ -189,4 +214,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // تهيئة التطبيق عند تحميل الصفحة
   initApp();
+
 });
