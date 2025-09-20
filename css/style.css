@@ -26,7 +26,53 @@
     border-bottom: 3px solid #0d6efd;
   }
 }
+/* أنماط قائمة المواقع */
+.location-item {
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
 
+.location-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(-2px);
+}
+
+.location-item.active {
+    background-color: #e3f2fd;
+    border-left: 4px solid #0d6efd;
+}
+
+.location-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.location-coords {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.location-actions {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.location-item:hover .location-actions {
+    opacity: 1;
+}
+
+.btn-location {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* زر المواقع في الهيدر */
+#location-list-button {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
 /* تنسيقات إضافية للواجهة */
 .prayer-card {
   transition: all 0.3s ease;
@@ -111,3 +157,4 @@
 .prayer-notification .btn-close {
   filter: invert(1);
 }
+
