@@ -114,7 +114,12 @@ function saveSettings() {
     maghribNotification: toggleMaghribNotification.checked,
     ishaNotification: toggleIshaNotification.checked
   };
-  
+  // فتح قائمة المواقع من الإعدادات
+document.getElementById('open-locations-list').addEventListener('click', () => {
+    if (typeof locationManager !== 'undefined') {
+        locationManager.openLocationModal();
+    }
+});
   localStorage.setItem('prayerSettings', JSON.stringify(settings));
   showNotification('تم حفظ الإعدادات بنجاح');
   calculateAndDisplayPrayerTimes();
@@ -213,4 +218,5 @@ function initAppearanceEvents() {
       }
     });
   }
+
 }
