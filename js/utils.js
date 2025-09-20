@@ -1,6 +1,8 @@
 // دوال مساعدة عامة
 function showError(message) {
   const errorMessageElement = document.getElementById('error-message');
+  if (!errorMessageElement) return;
+  
   errorMessageElement.textContent = message;
   errorMessageElement.style.display = 'block';
   setTimeout(() => {
@@ -10,6 +12,8 @@ function showError(message) {
 
 function showNotification(message) {
   const notificationEl = document.getElementById('notification');
+  if (!notificationEl) return;
+  
   notificationEl.querySelector('.toast-body').textContent = message;
   const toast = new bootstrap.Toast(notificationEl);
   toast.show();
@@ -17,6 +21,8 @@ function showNotification(message) {
 
 function updateLocationStatus(message, isError = false) {
   const locationStatus = document.getElementById('location-status');
+  if (!locationStatus) return;
+  
   locationStatus.textContent = message;
   locationStatus.className = isError ? 'mt-2 small text-danger' : 'mt-2 small text-success';
 }
