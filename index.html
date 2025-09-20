@@ -36,10 +36,17 @@
       <p id="date-display" class="mb-0 small opacity-75"></p>
     </div>
 
-    <!-- زر الترس -->
-    <button id="settings-button" class="btn btn-light">
-      <i class="bi bi-gear-fill"></i>
-    </button>
+    <div class="d-flex">
+      <!-- زر إدارة المواقع -->
+      <button id="location-list-button" class="btn btn-light ms-2">
+        <i class="bi bi-geo-alt-fill"></i> المواقع المحفوظة
+      </button>
+
+      <!-- زر الترس -->
+      <button id="settings-button" class="btn btn-light">
+        <i class="bi bi-gear-fill"></i>
+      </button>
+    </div>
   </header>
 
   <!-- أوقات الصلاة -->
@@ -155,26 +162,26 @@
                 </div>
 
                 <!-- تحديد الموقع -->
-               <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
-              <div class="d-flex gap-2 mb-3">
-              <button id="location-button" class="btn btn-outline-primary flex-fill">
-              <i class="bi bi-geo-alt-fill"></i> تحديد موقعي تلقائياً
-              </button>
-              <button id="open-locations-list" class="btn btn-outline-secondary">
-              <i class="bi bi-list-ul"></i> المواقع
-                </button>
-          </div>
+                <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
+                  <div class="d-flex gap-2 mb-3">
+                    <button id="location-button" class="btn btn-outline-primary flex-fill">
+                      <i class="bi bi-geo-alt-fill"></i> تحديد موقعي تلقائياً
+                    </button>
+                    <button id="open-locations-list" class="btn btn-outline-secondary">
+                      <i class="bi bi-list-ul"></i> المواقع
+                    </button>
+                  </div>
     
-         <div id="location-status" class="mt-2 small"></div>
+                  <div id="location-status" class="mt-2 small"></div>
 
-        <hr>
+                  <hr>
 
-        <div class="mb-3">
-        <label for="manual-location" class="form-label fw-bold">أدخل المدينة يدوياً:</label>
-        <input type="text" id="manual-location" class="form-control" placeholder="مثال: النجف">
-        </div>
-        <button id="save-manual-location" class="btn btn-primary">حفظ الموقع اليدوي</button>
-        </div>
+                  <div class="mb-3">
+                    <label for="manual-location" class="form-label fw-bold">أدخل المدينة يدوياً:</label>
+                    <input type="text" id="manual-location" class="form-control" placeholder="مثال: النجف">
+                  </div>
+                  <button id="save-manual-location" class="btn btn-primary">حفظ الموقع اليدوي</button>
+                </div>
 
                 <!-- تبويب الأصوات -->
                 <div class="tab-pane fade" id="v-pills-sound" role="tabpanel" aria-labelledby="v-pills-sound-tab">
@@ -292,6 +299,40 @@
     </div>
   </div>
 
+  <!-- نافذة إدارة المواقع -->
+  <div class="modal fade" id="location-list-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">المواقع المحفوظة</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="locations-container">
+            <div id="no-locations-message" class="text-center text-muted py-3">
+              لا توجد مواقع محفوظة
+            </div>
+            <div id="locations-list" class="list-group"></div>
+          </div>
+          
+          <div class="mt-3">
+            <div class="input-group">
+              <input type="text" id="new-location-name" 
+                     class="form-control" 
+                     placeholder="اسم الموقع (مثال: المنزل، العمل)">
+              <button id="save-current-location" class="btn btn-primary">
+                حفظ الموقع الحالي
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- إشعار -->
   <div id="notification" class="toast align-items-center text-white bg-primary border-0 position-fixed bottom-0 end-0 m-3" role="alert">
     <div class="d-flex">
@@ -327,11 +368,8 @@
   <script src="js/prayer-calculator.js"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/notifications.js"></script>
- <script src="js/settings.js"></script>
-<script src="js/location-manager.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/location-manager.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
-
-
-
