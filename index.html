@@ -38,26 +38,6 @@
     .location-marker .bi {
       font-size: 1.2rem;
     }
-    
-    /* تلميح الأدوات المخصص */
-    .custom-tooltip {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.875rem;
-      z-index: 1000;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      transform: translateY(-10px);
-    }
-    
-    .location-marker:hover .custom-tooltip {
-      opacity: 1;
-      transform: translateY(-15px);
-    }
   </style>
 </head>
 <body class="bg-light">
@@ -80,13 +60,10 @@
     </div>
 
     <div class="d-flex align-items-center">
-      <!-- علامة الموقع الشفافة مع تلميح -->
-      <div class="position-relative">
-        <button id="location-list-button" class="location-marker" title="المواقع المحفوظة">
-          <i class="bi bi-geo-alt-fill"></i>
-          <div class="custom-tooltip">المواقع المحفوظة</div>
-        </button>
-      </div>
+      <!-- علامة الموقع الشفافة -->
+      <button id="location-list-button" class="location-marker">
+        <i class="bi bi-geo-alt-fill"></i>
+      </button>
 
       <!-- زر الترس -->
       <button id="settings-button" class="btn btn-light">
