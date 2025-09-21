@@ -197,40 +197,64 @@ function autoSaveSettings() {
   // تطبيق المظهر بعد الحفظ
   applyAppearance(selectedAppearance);
 
+  // إعادة حساب أوقات الصلاة بعد تغيير الإعدادات
+  if (typeof calculateAndDisplayPrayerTimes === 'function') {
+    calculateAndDisplayPrayerTimes();
+  }
+
+  // إعادة تشغيل مراقبة الإشعارات بعد حفظ الإعدادات
+  if (typeof startNotificationChecker === 'function') {
+    startNotificationChecker();
+  }
+
   console.log('تم الحفظ التلقائي للإعدادات');
 }
 
 // تهيئة أحداث الحفظ التلقائي
 function initAutoSaveEvents() {
   // إعدادات الصلاة
-  document.getElementById('calculation-method').addEventListener('change', autoSaveSettings);
-  document.getElementById('time-format').addEventListener('change', autoSaveSettings);
-  document.getElementById('rounding-method').addEventListener('change', autoSaveSettings);
-  document.getElementById('manual-location').addEventListener('change', autoSaveSettings);
-  document.getElementById('toggle-asr').addEventListener('change', autoSaveSettings);
-  document.getElementById('toggle-isha').addEventListener('change', autoSaveSettings);
+  const prayerElements = [
+    'calculation-method', 'time-format', 'rounding-method', 'manual-location',
+    'toggle-asr', 'toggle-isha'
+  ];
+  
+  prayerElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('change', autoSaveSettings);
+    }
+  });
   
   // إعدادات الإشعارات
-  document.getElementById('toggle-fajr-notification').addEventListener('change', autoSaveSettings);
-  document.getElementById('toggle-dhuhr-notification').addEventListener('change', autoSaveSettings);
-  document.getElementById('toggle-asr-notification').addEventListener('change', autoSaveSettings);
-  document.getElementById('toggle-maghrib-notification').addEventListener('change', autoSaveSettings);
-  document.getElementById('toggle-isha-notification').addEventListener('change', autoSaveSettings);
+  const notificationElements = [
+    'toggle-fajr-notification', 'toggle-dhuhr-notification', 
+    'toggle-asr-notification', 'toggle-maghrib-notification', 
+    'toggle-isha-notification'
+  ];
   
-  // إعدادات الصوت (تمت إضافتها في initSoundEvents)
+  notificationElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('change', autoSaveSettings);
+    }
+  });
   
-  // إعدادات المظهر (تمت إضافتها في initAppearanceEvents)
-}
-
-function saveSettings() {
-  autoSaveSettings();
-  showNotification('تم حفظ الإعدادات بنجاح');
-  calculateAndDisplayPrayerTimes();
-
-  // إعادة تشغيل مراقبة الإشعارات بعد حفظ الإعدادات
-  if (typeof startNotificationChecker === 'function') {
-    startNotificationChecker();
-  }
+  // إعدادات الصوت
+  const soundElements = [
+    'toggle-fajr-adhan', 'toggle-dhuhr-adhan', 
+    'toggle-asr-adhan', 'toggle-maghrib-adhan', 
+    'toggle-isha-adhan', 'volume-level'
+  ];
+  
+  soundElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('change', autoSaveSettings);
+      if (id === 'volume-level') {
+        element.addEventListener('input', autoSaveSettings);
+      }
+    }
+  });
 }
 
 function selectSound(soundId) {
@@ -301,27 +325,16 @@ function initSoundEvents() {
   const volumeLevel = document.getElementById('volume-level');
   const adhanPlayer = document.getElementById('adhan-player');
   
-  volumeLevel.addEventListener('input', () => {
-    if (adhanPlayer) {
-      adhanPlayer.volume = volumeLevel.value / 100;
-    }
-    
-    // حفظ مستوى الصوت تلقائياً
-    autoSaveSettings();
-  });
-
-  // أحداث التبديل للتشغيل التلقائي للأذان
-  const toggleIds = [
-    'toggle-fajr-adhan',
-    'toggle-dhuhr-adhan',
-    'toggle-asr-adhan',
-    'toggle-maghrib-adhan',
-    'toggle-isha-adhan'
-  ];
-  
-  toggleIds.forEach(id => {
-    document.getElementById(id).addEventListener('change', autoSaveSettings);
-  });
+  if (volumeLevel) {
+    volumeLevel.addEventListener('input', () => {
+      if (adhanPlayer) {
+        adhanPlayer.volume = volumeLevel.value / 100;
+      }
+      
+      // حفظ مستوى الصوت تلقائياً
+      autoSaveSettings();
+    });
+  }
 }
 
 // تهيئة الأحداث الخاصة بمظهر التطبيق
@@ -362,10 +375,22 @@ document.getElementById('open-locations-list').addEventListener('click', () => {
   }
 });
 
-// استدعاء دالة الترحيل عند تحميل الصفحة
+// إزالة أزرار الحفظ والإلغاء من واجهة الإعدادات
+function removeSettingsButtons() {
+  const settingsModal = document.getElementById('settings-modal');
+  if (settingsModal) {
+    const modalFooter = settingsModal.querySelector('.modal-footer');
+    if (modalFooter) {
+      modalFooter.style.display = 'none';
+    }
+  }
+}
+
+// استدعاء دالة الترحيل وإزالة الأزرار عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
   migrateOldSettings();
   loadSettings();
+  removeSettingsButtons();
 });
 
 // تهيئة أحداث الحفظ عند فتح النافذة
@@ -374,3 +399,20 @@ document.getElementById('settings-modal').addEventListener('shown.bs.modal', fun
   initSoundEvents();
   initAppearanceEvents();
 });
+
+// إغلاق النافذة تلقائياً بعد فترة من عدم النشاط
+let inactivityTimer;
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    const settingsModal = bootstrap.Modal.getInstance(document.getElementById('settings-modal'));
+    if (settingsModal) {
+      settingsModal.hide();
+    }
+  }, 10000); // إغلاق بعد 10 ثواني من عدم النشاط
+}
+
+// إضافة مستمعي الأحداث لنشاط المستخدم
+document.getElementById('settings-modal').addEventListener('mousemove', resetInactivityTimer);
+document.getElementById('settings-modal').addEventListener('click', resetInactivityTimer);
+document.getElementById('settings-modal').addEventListener('keypress', resetInactivityTimer);
