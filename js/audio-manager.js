@@ -6,10 +6,54 @@ const adhanSounds = {
   'yasser-al-dosari': 'audio/yasser-al-dosari.mp3'
 };
 
+// متغيرات التخزين
+let currentLocation = {
+  latitude: 31.9539,
+  longitude: 44.3736
+};
+
+// دالة مساعدة للتحقق من وجود ملف
+async function checkFileExists(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    return response.ok;
+  } catch (error) {
+    console.error('Error checking file:', error);
+    return false;
+  }
+}
+
+// دالة مساعدة لعرض الإشعارات
+function showNotification(message) {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    const toastBody = notification.querySelector('.toast-body');
+    if (toastBody) {
+      toastBody.textContent = message;
+    }
+    const toast = new bootstrap.Toast(notification);
+    toast.show();
+  }
+}
+
+// دالة مساعدة لعرض الأخطاء
+function showError(message) {
+  const errorElement = document.getElementById('error-message');
+  if (errorElement) {
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+    setTimeout(() => {
+      errorElement.style.display = 'none';
+    }, 5000);
+  }
+  console.error(message);
+}
+
+// دالة تشغيل صوت الأذان
 async function playAdhanSound(soundId) {
   const soundUrl = adhanSounds[soundId];
   const adhanPlayer = document.getElementById('adhan-player');
-  const volumeLevel = document.getElementById('volume-level');
+  const volumeLevel = document.getElementById('volume-level') || { value: 80 };
 
   if (!soundUrl) {
     showError('لم يتم العثور على ملف الصوت المحدد');
@@ -47,6 +91,26 @@ async function playAdhanSound(soundId) {
   }
 }
 
+// دالة لاختبار صوت الأذان (يتم استدعاؤها من الزر الجديد)
+function testAdhanSound(soundId) {
+  const soundName = getMuezzinName(soundId);
+  showNotification(`جاري اختبار صوت الأذان: ${soundName}`);
+  playAdhanSound(soundId);
+}
+
+// دالة مساعدة للحصول على اسم المؤذن
+function getMuezzinName(value) {
+  const options = [
+    { value: 'abdul-basit', text: 'أبا ذر الحلواجي' },
+    { value: 'mishary-rashid', text: 'الشيخ شبر معله' },
+    { value: 'saud-al-shuraim', text: 'الحاج مصطفى الصراف' },
+    { value: 'yasser-al-dosari', text: 'محمد التوخى' }
+  ];
+  
+  const muezzin = options.find(option => option.value === value);
+  return muezzin ? muezzin.text : '';
+}
+
 // دالة للتحقق من أذونات الصوت
 function checkAudioPermissions() {
   try {
@@ -67,6 +131,18 @@ function checkAudioPermissions() {
   } catch (error) {
     console.error('خطأ في التحقق من أذونات الصوت:', error);
   }
+}
+
+// دالة للحصول على أوقات الصلاة (محاكاة - يجب استبدالها بالدالة الفعلية)
+function getPrayerTimes(lat, lng, date, method) {
+  // هذه دالة محاكاة، يجب استبدالها بالدالة الفعلية من praytimes.js
+  return {
+    fajr: '5:30',
+    dhuhr: '12:15',
+    asr: '15:45',
+    maghrib: '18:20',
+    isha: '19:45'
+  };
 }
 
 // دالة للتحقق من أوقات الصلاة وتشغيل الأذان
@@ -123,7 +199,9 @@ function enableAutoPlay() {
       userInteracted = true;
       localStorage.setItem('userInteracted', 'true');
       checkAudioPermissions();
-      interactionAlert.style.display = 'none';
+      if (interactionAlert) {
+        interactionAlert.style.display = 'none';
+      }
 
       // بدء مراقبة أوقات الصلاة بعد التفاعل
       setInterval(checkPrayerTimes, 60000);
@@ -138,10 +216,29 @@ function enableAutoPlay() {
 
   // إظهار تنبيه إذا لم يتفاعل المستخدم بعد
   setTimeout(() => {
-    if (!userInteracted) {
+    if (!userInteracted && interactionAlert) {
       interactionAlert.style.display = 'block';
     }
   }, 3000);
 
   return userInteracted;
 }
+
+// تهيئة التشغيل التلقائي عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  enableAutoPlay();
+  
+  // تهيئة مستوى الصوت
+  const volumeLevel = document.getElementById('volume-level');
+  if (volumeLevel) {
+    volumeLevel.value = localStorage.getItem('volumeLevel') || 80;
+    volumeLevel.addEventListener('change', function() {
+      localStorage.setItem('volumeLevel', this.value);
+    });
+  }
+});
+
+// جعل الدوال متاحة عالمياً للاستدعاء من الملفات الأخرى
+window.playAdhanSound = playAdhanSound;
+window.testAdhanSound = testAdhanSound;
+window.getMuezzinName = getMuezzinName;
