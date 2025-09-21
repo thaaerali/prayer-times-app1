@@ -26,7 +26,26 @@
     border-bottom: 3px solid #0d6efd;
   }
 }
-
+   /* أنماط علامة الموقع الشفافة */
+    .location-marker {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 8px;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 50%;
+    }
+    
+    .location-marker:hover {
+      color: rgba(255, 255, 255, 1);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .location-marker .bi {
+      font-size: 1.2rem;
+   
 /* تنسيقات إضافية للواجهة */
 .prayer-card {
   transition: all 0.3s ease;
@@ -115,4 +134,5 @@
 
 .prayer-notification .btn-close {
   filter: invert(1);
+
 }
