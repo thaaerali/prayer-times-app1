@@ -125,11 +125,46 @@ function loadSettings() {
   // إضافة مستمعي الأحداث للحفظ التلقائي
   initAutoSaveEvents();
 
+  // إعادة عرض التاريخ بعد تحميل الإعدادات
+  setTimeout(displayCurrentDate, 100);
+
   return {
     ...prayerSettings,
     ...soundSettings,
     ...appearanceSettings
   };
+}
+
+// دالة لعرض التاريخ الحالي
+function displayCurrentDate() {
+  const dateDisplay = document.getElementById('date-display');
+  if (dateDisplay) {
+    // إذا كانت هناك دالة موجودة مسبقاً لعرض التاريخ، استخدمها
+    if (typeof updateDateDisplay === 'function') {
+      updateDateDisplay();
+    } else {
+      // بديل إذا لم تكن الدالة موجودة
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const gregorianDate = now.toLocaleDateString('ar-SA', options);
+      
+      // محاولة حساب التاريخ الهجري إذا كانت الدالة متوفرة
+      let hijriDate = '';
+      if (typeof getHijriDate === 'function') {
+        hijriDate = getHijriDate(now);
+      } else {
+        // تنسيق بديل إذا لم تكن الدالة متوفرة
+        hijriDate = now.toLocaleDateString('ar-SA', {
+          calendar: 'islamic',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+      
+      dateDisplay.textContent = `${gregorianDate} / ${hijriDate}`;
+    }
+  }
 }
 
 // دالة للحفظ التلقائي للإعدادات
@@ -197,14 +232,18 @@ function autoSaveSettings() {
   // تطبيق المظهر بعد الحفظ
   applyAppearance(selectedAppearance);
 
-  // إعادة حساب أوقات الصلاة بعد تغيير الإعدادات
+  // إعادة حساب أوقات الصلاة بعد تغيير الإعدادات (باستخدام setTimeout لمنع التداخل)
   if (typeof calculateAndDisplayPrayerTimes === 'function') {
-    calculateAndDisplayPrayerTimes();
+    setTimeout(() => {
+      calculateAndDisplayPrayerTimes();
+      // إعادة عرض التاريخ بعد التحديث
+      displayCurrentDate();
+    }, 100);
   }
 
   // إعادة تشغيل مراقبة الإشعارات بعد حفظ الإعدادات
   if (typeof startNotificationChecker === 'function') {
-    startNotificationChecker();
+    setTimeout(startNotificationChecker, 150);
   }
 
   console.log('تم الحفظ التلقائي للإعدادات');
@@ -296,6 +335,9 @@ function applyAppearance(appearance) {
   } else {
     document.body.classList.remove('dark-mode');
   }
+  
+  // التأكد من أن التاريخ يظهر بعد تغيير المظهر
+  setTimeout(displayCurrentDate, 50);
 }
 
 // تهيئة الأحداث الخاصة بالأصوات
@@ -391,6 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
   migrateOldSettings();
   loadSettings();
   removeSettingsButtons();
+  displayCurrentDate(); // عرض التاريخ عند تحميل الصفحة
 });
 
 // تهيئة أحداث الحفظ عند فتح النافذة
@@ -413,6 +456,9 @@ function resetInactivityTimer() {
 }
 
 // إضافة مستمعي الأحداث لنشاط المستخدم
-document.getElementById('settings-modal').addEventListener('mousemove', resetInactivityTimer);
-document.getElementById('settings-modal').addEventListener('click', resetInactivityTimer);
-document.getElementById('settings-modal').addEventListener('keypress', resetInactivityTimer);
+const settingsModalElement = document.getElementById('settings-modal');
+if (settingsModalElement) {
+  settingsModalElement.addEventListener('mousemove', resetInactivityTimer);
+  settingsModalElement.addEventListener('click', resetInactivityTimer);
+  settingsModalElement.addEventListener('keypress', resetInactivityTimer);
+}
