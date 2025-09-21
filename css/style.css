@@ -40,6 +40,34 @@
       opacity: 0.8;
       background-color: rgba(255, 255, 255, 0.2) !important;
     }
+ /* تخصيصات إضافية للواجهة */
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .location-marker {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      margin-left: 10px;
+    }
+    
+    .prayer-card {
+      transition: transform 0.3s;
+    }
+    
+    .prayer-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .active-prayer {
+      background: linear-gradient(45deg, #0d6efd, #0dcaf0) !important;
+      color: white !important;
+    }
    /* أنماط علامة الموقع الشفافة */
     .location-marker {
       background: transparent;
@@ -150,4 +178,5 @@
   filter: invert(1);
 
 }
+
 
