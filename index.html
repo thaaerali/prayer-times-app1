@@ -37,6 +37,27 @@
       opacity: 0.8;
       background-color: rgba(255, 255, 255, 0.2) !important;
     }
+
+    /* تخصيص زر اختبار الصوت */
+    .test-sound-btn {
+      border-radius: 50% !important;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+
+    /* تحسين تخطيط مجموعة اختيار المؤذن */
+    .muezzin-select-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .muezzin-select {
+      flex: 1;
+    }
   </style>
   
 <link rel="manifest" href="manifest.json">
@@ -224,15 +245,20 @@
 
                 <!-- تبويب الأصوات -->
                 <div class="tab-pane fade" id="v-pills-sound" role="tabpanel" aria-labelledby="v-pills-sound-tab">
-                  <!-- قائمة المؤذنين المنسدلة -->
+                  <!-- قائمة المؤذنين المنسدلة مع زر الاختبار -->
                   <div class="mb-4">
                     <h6 class="fw-bold mb-3">اختيار المؤذن</h6>
-                    <select id="muezzin-select" class="form-select">
-                      <option value="abdul-basit">أبا ذر الحلواجي</option>
-                      <option value="mishary-rashid">الشيخ شبر معله</option>
-                      <option value="saud-al-shuraim">الحاج مصطفى الصراف</option>
-                      <option value="yasser-al-dosari">محمد التوخى</option>
-                    </select>
+                    <div class="muezzin-select-group">
+                      <button id="test-adhan-btn" class="btn btn-primary test-sound-btn" title="اختبار صوت الأذان">
+                        <i class="bi bi-play-fill"></i>
+                      </button>
+                      <select id="muezzin-select" class="form-select muezzin-select">
+                        <option value="abdul-basit">أبا ذر الحلواجي</option>
+                        <option value="mishary-rashid">الشيخ شبر معله</option>
+                        <option value="saud-al-shuraim">الحاج مصطفى الصراف</option>
+                        <option value="yasser-al-dosari">محمد التوخى</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div class="mb-4">
@@ -316,7 +342,7 @@
                       <div class="list-group-item sound-item d-flex justify-content-between align-items-center" data-appearance="light">
                         <div>
                           <span class="fw-medium">الوضع النهاري</span>
-                          <small class="d-block text-muted">مظهر فاتح مناسب للنهار</small>
+                          <small class="d-block text-muted">مظهر فاتح مناسب للنهar</small>
                         </div>
                         <i class="bi bi-sun-fill text-warning"></i>
                       </div>
@@ -418,5 +444,38 @@
   <script src="js/settings.js"></script>
   <script src="js/location-manager.js"></script>
   <script src="js/app.js"></script>
+
+  <script>
+    // دالة لاختبار صوت الأذان
+    document.getElementById('test-adhan-btn').addEventListener('click', function() {
+      const selectedMuezzin = document.getElementById('muezzin-select').value;
+      testAdhanSound(selectedMuezzin);
+    });
+
+    // دالة محاكاة لاختبار الصوت (يجب استبدالها بالدالة الفعلية من audio-manager.js)
+    function testAdhanSound(muezzin) {
+      // هذه دالة محاكاة - يجب استبدالها بالاستدعاء الفعلي للدالة في audio-manager.js
+      console.log(`تشغيل صوت اختبار للمؤذن: ${muezzin}`);
+      
+      // عرض رسالة للمستخدم
+      const toast = new bootstrap.Toast(document.getElementById('notification'));
+      document.querySelector('.toast-body').textContent = `جاري تشغيل صوت المؤذن: ${getMuezzinName(muezzin)}`;
+      toast.show();
+      
+      // هنا سيتم استدعاء الدالة الفعلية لتشغيل الصوت
+      // playAdhanTest(muezzin);
+    }
+
+    // دالة مساعدة للحصول على اسم المؤذن
+    function getMuezzinName(value) {
+      const options = document.getElementById('muezzin-select').options;
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+          return options[i].text;
+        }
+      }
+      return '';
+    }
+  </script>
 </body>
 </html>
