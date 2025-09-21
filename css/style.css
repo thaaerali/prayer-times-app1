@@ -26,6 +26,17 @@
     border-bottom: 3px solid #0d6efd;
   }
 }
+ /* إزالة الهوامش الافتراضية للجسم والصفحة */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* إصلاح المسافة البيضاء في الأعلى */
+    header {
+      margin-top: 0 !important;
+      border-radius: 0 !important;
+    }
  /* تخصيص زر الترس ليكون شفافًا */
     #settings-button {
       background-color: transparent !important;
@@ -178,5 +189,6 @@
   filter: invert(1);
 
 }
+
 
 
